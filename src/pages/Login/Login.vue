@@ -38,7 +38,7 @@
               </section>
               <section class="login_message">
                 <input type="text" maxlength="11" placeholder="验证码" v-model="captcha">
-                <img class="get_verification" src="./images/captcha.svg" alt="captcha">
+                <img class="get_verification" src="http://localhost:4000/captcha" alt="captcha" ref="captcha" @click="getCaptcha">
               </section>
             </section>
           </div>
@@ -56,6 +56,8 @@
 
 <script>
   import AlertTip from "../../components/AlertTip/AlertTip";
+  import {reqLogin,reqSendCode,reqLoginSms} from '../../api/index'
+  import {mapActions} from 'vuex'
   export default {
     data(){
       return{
@@ -77,17 +79,29 @@
       }
     },
     methods:{
-      getCode(){//获取验证码
+      ...mapActions(['recordUser']),
+     async getCode(){//获取验证码
         if(!this.computeTime){//没有计时才启动倒计时
           this.computeTime = 30;
-          const intervalId = setInterval(() => {
+           this.intervalId = setInterval(() => {
             this.computeTime --;
             if(this.computeTime <= 0){
               //停止计时
-              clearInterval(intervalId);
+              clearInterval(this.intervalId);
             }
           },1000)
-          //发送请求
+          //发送请求获取验证码
+          const result = await reqSendCode(this.phone);
+          if(result.code === 1){
+            //显示提示
+            this.showAlertMsg(result.msg);
+            //停止计时器
+            if(this.computeTime){
+              this.computeTime = 0;
+              clearInterval(this.intervalId);
+              this.intervalId = undefined;
+            }
+          }
         }
       },
       showAlertMsg(alertText){//提示框
@@ -98,24 +112,50 @@
         this.showAlert = false;
         this.alertText = '';
       },
-      login(){//登陆
+      async login(){//登陆
+        let result;
         if(this.loginWay){ //短信登陆
           const {phone,code,rightPhone} = this;
           if(!rightPhone){ //手机号不正确
             this.showAlertMsg('手机号不正确');
+            return;
           }else if(!/^\d{6}$/.test(code)){//验证码必需是六位数字
             this.showAlertMsg('验证码必需是六位数字');
+            return;
           }
+          result = await reqLoginSms(phone,code);
         }else{//密码登陆
           const {name,pwd,captcha} = this;
           if(!name){ //用户名必填
             this.showAlertMsg('用户名必填');
+            return;
           }else if(!pwd){//密码必填
             this.showAlertMsg('密码必填');
+            return;
           }else if(!captcha){//验证码必填
             this.showAlertMsg('验证码必填');
+            return;
           }
+          result = await reqLogin(name,pwd,captcha);
         }
+        if(this.computeTime){
+          this.computeTime = 0;
+          clearInterval(this.intervalId);
+          this.intervalId = undefined;
+        }
+        if(result.code === 0){
+          const user = result.data;
+          //将user保存到vuex中
+          this.recordUser(user);
+          //跳转到个人中心页面
+          this.$router.replace('/profile');
+        }else{
+          this.getCaptcha();
+          this.showAlertMsg(result.msg);
+        }
+      },
+      getCaptcha(){// 获取新的图片验证码
+        this.$refs.captcha.src = 'http://localhost:4000/captcha?' + Date.now();
       }
     },
     components:{

@@ -2,7 +2,7 @@
   通过mutations间接更新state的多个方法对象
  */
 
-import {RECEIVE_ADDRESS,RECEIVE_CATEGORY,RECEIVE_SHOPS} from './mutation-types'
+import {RECEIVE_ADDRESS,RECEIVE_CATEGORY,RECEIVE_SHOPS,RECEIVE_USER_INFO} from './mutation-types'
 
 import {reqAddress,reqCategory,reqShops} from '../api/index'
 
@@ -33,6 +33,9 @@ export default {
       const shops = result.data;
       commit(RECEIVE_SHOPS,{shops})
     }
+  },
+  //记录用户信息
+  recordUser({commit},userInfo){
+    commit(RECEIVE_USER_INFO,{userInfo});
   }
-
 }
