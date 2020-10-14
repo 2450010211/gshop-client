@@ -14,9 +14,10 @@
     },
     mounted() {
      this.getAddress(); //调用actions中的方法
+     this.getUserInfo(); //获取用户信息
     },
     methods:{
-      ...mapActions(['getAddress'])
+      ...mapActions(['getAddress','getUserInfo'])
     },
   }
 </script>

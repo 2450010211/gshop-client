@@ -2,7 +2,7 @@
   <div class="profile">
     <HeaderTop title="我的" />
     <section class="profile-number">
-      <router-link to="/login" class="profile-link">
+      <router-link :to="userInfo._id ? '/userinfo' : '/login'" class="profile-link">
         <div class="profile_image">
           <i class="iconfont icon-icon-person"></i>
         </div>
@@ -88,18 +88,36 @@
         </div>
       </a>
     </section>
+    <section class="profile_my_order">
+      <mt-button type="danger" style="width: 100%" v-if="userInfo._id" @click="logout">退出登陆</mt-button>
+    </section>
   </div>
 </template>
 
 <script>
   import {mapState} from 'vuex'
   import HeaderTop from '../../components/HeaderTop/HeaderTop'
+  import {MessageBox,Toast} from 'mint-ui';
+
   export default {
     components:{
       HeaderTop
     },
     computed:{
       ...mapState(['userInfo'])
+    },
+    methods:{
+      logout(){ //退出登陆
+        MessageBox.confirm('确定执行此操作?').then(
+          action => {
+            this.$store.dispatch('getLogout');  //退出登陆
+            Toast('登出成功');
+          },
+          action => {
+            console.log('取消');
+          },
+        );
+      }
     }
   }
 </script>

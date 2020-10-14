@@ -8,3 +8,5 @@ export const RECEIVE_CATEGORY = "receive_category"; //接收食品分类数组
 export const RECEIVE_SHOPS = "receive_shops"; //接收商家数组
 
 export const RECEIVE_USER_INFO = "receive_user_info"; //接收商家数组
+
+export const RESET_USER_INFO = "reset_user_info"; //重置用户信息

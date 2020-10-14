@@ -2,12 +2,15 @@
   <div class="msite">
     <!--首页头部-->
     <HeaderTop :title="address.address">
-      <span class="header_search" slot="left">
+      <router-link to="/search" class="header_search" slot="left">
         <i class="iconfont icon-search"></i>
-      </span>
-      <span class="header_login" slot="right">
-        <span class="header_login_text">登录|注册</span>
-      </span>
+      </router-link>
+      <router-link :to="userInfo._id ? '/userinfo' : '/login'" class="header_login" slot="right">
+        <span class="header_login_text" v-if="!userInfo._id">登录/注册</span>
+        <span class="header_login_text" v-else>
+          <i class="iconfont icon-icon-person"></i>
+        </span>
+      </router-link>
     </HeaderTop>
     <!--首页导航-->
     <nav class="msite_nav">
@@ -56,7 +59,7 @@
       this.getShops();
     },
     computed:{
-      ...mapState(['address','category']),
+      ...mapState(['address','category','userInfo']),
 
       /*
       后台返回category的数据是一个一维数组
