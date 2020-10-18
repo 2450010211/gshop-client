@@ -2,9 +2,9 @@
   通过mutations间接更新state的多个方法对象
  */
 
-import {RECEIVE_ADDRESS,RECEIVE_CATEGORY,RECEIVE_SHOPS,RECEIVE_USER_INFO,RESET_USER_INFO} from './mutation-types'
+import {RECEIVE_ADDRESS,RECEIVE_CATEGORY,RECEIVE_SHOPS,RECEIVE_USER_INFO,RESET_USER_INFO,RECEIVE_FOODS,RECEIVE_RATINGS,RECEIVE_INFO} from './mutation-types'
 
-import {reqAddress,reqCategory,reqShops,reqUserInfo,reqLogout} from '../api/index'
+import {reqAddress,reqCategory,reqShops,reqUserInfo,reqLogout,reqShopFood,reqShopRating,reqShopInfo} from '../api/index'
 
 export default {
 
@@ -52,6 +52,27 @@ export default {
     if(result.code === 0){
       console.log('退出登录成功');
       commit(RESET_USER_INFO);
+    }
+  },
+  async getShopFoods({commit}){
+    const result = await reqShopFood();
+    if(result.code === 0){
+      const foods = result.data;
+      commit(RECEIVE_FOODS,{foods});
+    }
+  },
+  async getShopRatings({commit}){
+   const result = await reqShopRating();
+   if(result.code === 0){
+     const ratings = result.data;
+     commit(RECEIVE_RATINGS,{ratings});
+   }
+  },
+  async getShopInfo({commit}){
+    const result = await reqShopInfo();
+    if(result.code === 0){
+      const info = result.data;
+      commit(RECEIVE_INFO,{info});
     }
   }
 }

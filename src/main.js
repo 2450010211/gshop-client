@@ -10,6 +10,9 @@ import {Button} from 'mint-ui'
 // 注册全局组件Button可使用标签<mt-button>
 Vue.component(Button.name, Button)
 
+//因为mockServer不需要暴露出来，import方式类似导入css样式
+import './mock/mockServer'
+
  new Vue({
   el: '#app',
   components: { App },
