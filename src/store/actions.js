@@ -54,11 +54,13 @@ export default {
       commit(RESET_USER_INFO);
     }
   },
-  async getShopFoods({commit}){
+  async getShopFoods({commit},callback){
     const result = await reqShopFood();
     if(result.code === 0){
       const foods = result.data;
       commit(RECEIVE_FOODS,{foods});
+      //数据更新了，通知组件
+      callback && callback();
     }
   },
   async getShopRatings({commit}){

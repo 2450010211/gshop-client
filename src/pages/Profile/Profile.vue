@@ -142,7 +142,7 @@
           border-radius 50%
           overflow hidden
           vertical-align top
-          .icon-person
+          .icon-icon-person
             background #e4e4e4
             font-size 62px
         .user-info
@@ -173,7 +173,7 @@
           position absolute
           right 15px
           top 40%
-          .icon-jiantou1
+          .icon-jiantou
             color #fff
             font-size 5px
     .profile_info_data
@@ -252,7 +252,7 @@
           .my_order_icon
             width 10px
             height 10px
-            .icon-jiantou1
+            .icon-jiantou
               color #bbb
               font-size 10px
 </style>
