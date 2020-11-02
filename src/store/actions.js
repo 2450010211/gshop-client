@@ -2,9 +2,29 @@
   通过mutations间接更新state的多个方法对象
  */
 
-import {RECEIVE_ADDRESS,RECEIVE_CATEGORY,RECEIVE_SHOPS,RECEIVE_USER_INFO,RESET_USER_INFO,RECEIVE_FOODS,RECEIVE_RATINGS,RECEIVE_INFO} from './mutation-types'
+import {
+  RECEIVE_ADDRESS,
+  RECEIVE_CATEGORY,
+  RECEIVE_SHOPS,
+  RECEIVE_USER_INFO,
+  RESET_USER_INFO,
+  RECEIVE_FOODS,
+  RECEIVE_RATINGS,
+  RECEIVE_INFO,
+  INCREMENT_FOOD_COUNT,
+  DECREMENT_FOOD_COUNT
+} from './mutation-types'
 
-import {reqAddress,reqCategory,reqShops,reqUserInfo,reqLogout,reqShopFood,reqShopRating,reqShopInfo} from '../api/index'
+import {
+  reqAddress,
+  reqCategory,
+  reqShops,
+  reqUserInfo,
+  reqLogout,
+  reqShopFood,
+  reqShopRating,
+  reqShopInfo
+} from '../api/index'
 
 export default {
 
@@ -75,6 +95,13 @@ export default {
     if(result.code === 0){
       const info = result.data;
       commit(RECEIVE_INFO,{info});
+    }
+  },
+  updateFoodCount({commit},{isAdd,food}){
+    if(isAdd){
+      commit(INCREMENT_FOOD_COUNT,{food});
+    }else{
+      commit(DECREMENT_FOOD_COUNT,{food});
     }
   }
 }

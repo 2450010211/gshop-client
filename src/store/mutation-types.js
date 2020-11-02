@@ -1,5 +1,6 @@
 /*
   包含多个mutations的type名称常量
+  Ctrl + Shift + U
  */
 export const RECEIVE_ADDRESS = "receive_address"; //接收地址
 
@@ -16,3 +17,7 @@ export const RECEIVE_FOODS = "receive_foods"; //商品列表
 export const RECEIVE_RATINGS = "receive_ratings"; //商家评论列表
 
 export const RECEIVE_INFO = "receive_info"; //商家信息
+
+export const INCREMENT_FOOD_COUNT = "increment_food_count"; //增加food中的count
+
+export const DECREMENT_FOOD_COUNT = "decrement_food_count"; //减少food中的count
