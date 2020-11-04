@@ -18,10 +18,11 @@
           </div>
         </div>
       </div>
-      <div class="shopcart-list" v-if="isShow">
+      <transition name="move">
+        <div class="shopcart-list" v-if="isShow">
         <div class="list-header">
           <h1 class="title">购物车</h1>
-          <span class="empty">清空</span>
+          <span class="empty" @click="clearCart">清空</span>
         </div>
         <div class="list-content">
           <ul>
@@ -37,14 +38,17 @@
           </ul>
         </div>
       </div>
+      </transition>
     </div>
     <div class="list-mask" v-if="listShow" @click="toggleShow"></div>
   </div>
 </template>
 
 <script>
+  import BetterScroll from 'better-scroll'
   import {mapState,mapGetters} from 'vuex'
   import CartControl from "../CartControl/CartControl";
+  import {MessageBox} from 'mint-ui'
 
     export default {
       data(){
@@ -79,6 +83,18 @@
             this.isShow = false;
             return false;
           }
+          if(this.isShow){
+            this.$nextTick(() => {
+              //实现BetterScroll的实例是一个单例
+              if(!this.cartScroll){
+                this.cartScroll = new BetterScroll('.list-content',{
+                  click: true
+                })
+              }else{  //第一次滑动的时候滑不动优化,重新统计内容的高度
+                this.cartScroll.refresh();
+              }
+            })
+          }
           return this.isShow;
         }
       },
@@ -87,6 +103,11 @@
           if (this.totalCount > 0){
             this.isShow = !this.isShow;
           }
+        },
+        clearCart(){
+          MessageBox.confirm('确定清空购物车吗?').then(action => {
+            this.$store.dispatch('clearCart')
+          },action =>{})
         }
       }
     }
