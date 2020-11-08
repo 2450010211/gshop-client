@@ -3,16 +3,18 @@
     <ShopHeader/>
     <div class="tab">
       <div class="tab-item">
-        <router-link to="/shop/food">点餐</router-link>
+        <router-link to="/shop/food" replace>点餐</router-link>
       </div>
       <div class="tab-item">
-        <router-link to="/shop/rating">评价</router-link>
+        <router-link to="/shop/rating" replace>评价</router-link>
       </div>
       <div class="tab-item">
-        <router-link to="/shop/info">商家</router-link>
+        <router-link to="/shop/info" replace>商家</router-link>
       </div>
     </div>
-    <router-view></router-view>
+    <keep-alive><!-- 缓存路由组件，页面切换之后跳转回来还是在之前浏览的地方 -->
+      <router-view></router-view>
+    </keep-alive>
   </div>
 </template>
 

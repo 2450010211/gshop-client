@@ -58,7 +58,7 @@
                 <span class="iconfont" :class="rating.rateType ===0 ? 'icon-thumbup' : 'icon-thumbdown'"></span>
                 <span class="item" v-for="(item,index) in rating.recommend" :key="index">{{item}}</span>
               </div>
-              <div class="time">{{rating.rateTime | dateformat('YYYY-MM-DD HH:mm:ss')}}</div>
+              <div class="time">{{rating.rateTime | dateFormat}}</div>
             </div>
           </li>
         </ul>
@@ -85,7 +85,7 @@
       mounted() {
         this.$store.dispatch('getShopRatings',() =>{
           this.$nextTick(() =>{
-            new BetterScroll(this.$refs.ratings,{
+          this.bScroll = new BetterScroll(this.$refs.ratings,{
               click: true
             })
           })
@@ -96,7 +96,7 @@
         ...mapGetters(['positiveSize']),
         filterRatings(){
           const {ratings,checkMessage,selectType} = this;
-          return ratings.filter(rating => {
+         return ratings.filter(rating => {
             const {rateType,text} = rating;
             return (selectType === 2 || selectType === rateType) && (!checkMessage || text.length > 0)
           })
@@ -107,9 +107,11 @@
           this.checkMessage = !this.checkMessage;
         }
       },
-      filters:{
-        dateformat: (dataStr,pattern) =>{
-            return moment(dataStr).format(pattern)
+      watch:{
+        filterRatings(value){
+          this.$nextTick(() => {
+            this.bScroll.refresh();
+          })
         }
       }
     }

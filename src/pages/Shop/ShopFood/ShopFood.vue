@@ -49,7 +49,7 @@
 <script>
 
   import {mapState} from 'vuex'
-  import BetterScroll  from 'better-scroll'
+  import BetterScroll from 'better-scroll'
   import CartControl from "../../../components/CartControl/CartControl";
   import Food from "../../../components/Food/Food";
   import ShopCart from "../../../components/ShopCart/ShopCart";
